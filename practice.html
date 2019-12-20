@@ -1,0 +1,42 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>
+$(function() {
+    if (!window.FileReader) {
+        alert("not supported File API.");
+        return false;
+    }
+
+    var droparea = $("#xxx");
+
+    var cancelEvent = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    }
+
+    droparea.bind("dragenter", cancelEvent);
+    droparea.bind("dragover", cancelEvent);
+    
+    droparea.bind("drop", function(event) {
+        var file = event.originalEvent.dataTransfer.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function(event) {
+            $("#image").attr("src", reader.result);
+        }
+
+        reader.readAsDataURL(file);
+        cancelEvent(event);
+        return false;
+    });
+});
+</script>
+</head>
+<body>
+    <div id="xxx" style="width:500px;height:600px;background-color:#CBCBCB"><img id="image" style="width:100%" /></div>
+
+<!-- OKボタンを設置して、D&Dされたファイルをアップロードするとか -->
+</body>
+</html>
